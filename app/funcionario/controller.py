@@ -1,4 +1,3 @@
-from sqlalchemy import func
 from app.funcionario.models import Funcionario
 from flask.views import MethodView
 from flask import request, jsonify

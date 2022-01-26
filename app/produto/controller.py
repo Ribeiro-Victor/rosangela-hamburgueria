@@ -1,4 +1,3 @@
-from math import prod
 from app.produto.models import Produto
 from flask.views import MethodView
 from flask import request, jsonify
