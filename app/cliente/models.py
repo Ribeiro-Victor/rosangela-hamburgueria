@@ -13,6 +13,8 @@ class Cliente(BaseModel):
     telefone = db.Column(db.String(20))
     endereco = db.Column(db.String(70))
 
+    carrinho = db.relationship("Carrinho", back_populates="cliente", uselist=False)
+
     def json(self):
         return {
             "id":self.id,
