@@ -44,8 +44,8 @@ class CarrinhoId(MethodView):
         body = request.json
         carrinho = Carrinho.query.get_or_404(id)
 
-        precoTotal = body.get('precoTotal')
-        id_cliente = body.get('id_cliente')
+        precoTotal = body.get('precoTotal', carrinho.precoTotal)
+        id_cliente = body.get('id_cliente', carrinho.id_cliente)
         
         if isinstance(precoTotal, float) and isinstance(id_cliente, int):
             carrinho.precoTotal = precoTotal
