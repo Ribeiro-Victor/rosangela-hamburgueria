@@ -15,6 +15,8 @@ class Carrinho(BaseModel):
 
     def json(self):
         return {
+            "id":self.id,
             "precoTotal":self.precoTotal,
-            "idCliente":self.id_cliente
+            "id_cliente":self.id_cliente,
+            "produtos":self.produtos
         }
