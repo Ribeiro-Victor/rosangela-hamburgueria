@@ -13,6 +13,7 @@ class Produto(BaseModel):
 
     def json(self):
         return {
+            "id":self.id,
             "nome":self.nome,
             "descricao":self.descricao,
             "preco":self.preco
