@@ -12,6 +12,8 @@ class Funcionario(BaseModel):
 
     def json(self):
         return {
+            "id":self.id,
             "nome":self.nome,
-            "email":self.email
+            "email":self.email,
+            "senha":self.senha
         }

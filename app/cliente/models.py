@@ -22,5 +22,6 @@ class Cliente(BaseModel):
             "nome":self.nome,
             "email":self.email,
             "endereco": self.endereco,
-            "telefone": self.telefone
+            "telefone": self.telefone,
+            "senha":self.senha
         }
