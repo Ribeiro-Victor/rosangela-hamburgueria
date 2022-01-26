@@ -3,6 +3,7 @@ from .config import Config
 from .extensions import db, migrate
 from app.cliente.routes import cliente_api
 from app.funcionario.routes import funcionario_api
+from app.produto.routes import produto_api
 
 
 def create_app():
@@ -14,6 +15,7 @@ def create_app():
 
     app.register_blueprint(cliente_api)
     app.register_blueprint(funcionario_api)
+    app.register_blueprint(produto_api)
 
     return app
 
