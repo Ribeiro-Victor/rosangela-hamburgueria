@@ -1,8 +1,10 @@
+from click import decorators
 from app.funcionario.models import Funcionario
 from flask.views import MethodView
 from flask import request, jsonify, render_template
 from flask_mail import Message
 from app.extensions import mail
+from flask_jwt_extended import create_access_token, jwt_required
 import bcrypt
 
 class FuncionarioG(MethodView):
@@ -40,7 +42,7 @@ class FuncionarioG(MethodView):
         return jsonify([funcionario.json() for funcionario in funcionarios]), 200
 
 class FuncionarioId(MethodView):
-
+    decorators = [jwt_required()]
     def get(self, id):
         funcionario = Funcionario.query.get_or_404(id)
         return funcionario.json()
@@ -81,3 +83,20 @@ class FuncionarioId(MethodView):
         funcionario = Funcionario.query.get_or_404(id)
         funcionario.delete(funcionario)
         return funcionario.json()
+
+class FuncionarioLogin(MethodView): #/login
+    
+    def post(self):
+        body = request.json
+
+        email = body.get('email')
+        senha = body.get('senha')
+
+        funcionario = Funcionario.query.filter_by(email=email).first()
+
+        if not funcionario or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()):
+            return {'error': 'Usuário ou senha inválido'}
+        
+        token = create_access_token(identity=funcionario.id)
+
+        return {'token':token}, 200
