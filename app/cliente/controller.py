@@ -1,8 +1,11 @@
+from click import decorators
 from app.cliente.models import Cliente
 from flask.views import MethodView
 from flask import request, jsonify, render_template
 from flask_mail import Message
 from app.extensions import mail
+from flask_jwt_extended import create_access_token, jwt_required
+import bcrypt
 
 class ClienteG(MethodView):
 
@@ -21,7 +24,9 @@ class ClienteG(MethodView):
                 cliente = Cliente.query.filter_by(email=email).first()
                 if cliente:
                     return {"code_status":"cliente already exists"}, 400
-                cliente = Cliente(nome=nome, email=email, cpf=cpf, senha=senha, telefone=telefone, endereco=endereco)
+                
+                senha_hash = bcrypt(senha.encode(), bcrypt.gensalt())
+                cliente = Cliente(nome=nome, email=email, cpf=cpf, senha=senha_hash, telefone=telefone, endereco=endereco)
                 cliente.save()
 
                 msg = Message(
@@ -41,7 +46,7 @@ class ClienteG(MethodView):
         return jsonify([cliente.json() for cliente in clientes]), 200
     
 class ClienteId(MethodView):
-
+    decorators = [jwt_required()]
     def get(self, id):
         cliente = Cliente.query.get_or_404(id)
         return cliente.json()
@@ -96,3 +101,20 @@ class ClienteId(MethodView):
         cliente = Cliente.query.get_or_404(id)
         cliente.delete(cliente)
         return cliente.json()
+
+class ClienteLogin(MethodView): #/login-cliente
+    
+    def post(self):
+        body = request.json
+
+        email = body.get('email')
+        senha = body.get('senha')
+
+        cliente = Cliente.query.filter_by(email=email).first()
+
+        if not cliente or not bcrypt.hashpw(senha.encode(), bcrypt.gensalt()):
+            return {'error': 'Usuário ou senha inválido'}
+        
+        token = create_access_token(identity=cliente.id)
+
+        return {'token':token}, 200
