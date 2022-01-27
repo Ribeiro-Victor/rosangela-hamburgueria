@@ -1,6 +1,8 @@
 from app.cliente.models import Cliente
 from flask.views import MethodView
-from flask import request, jsonify
+from flask import request, jsonify, render_template
+from flask_mail import Message
+from app.extensions import mail
 
 class ClienteG(MethodView):
 
@@ -21,6 +23,16 @@ class ClienteG(MethodView):
                     return {"code_status":"cliente already exists"}, 400
                 cliente = Cliente(nome=nome, email=email, cpf=cpf, senha=senha, telefone=telefone, endereco=endereco)
                 cliente.save()
+
+                msg = Message(
+                sender = 'ribeiro@poli.ufrj.br',
+                recipients=[email],
+                subject='Bem-vindo(a) ao Minerva Burguer!',
+                html=render_template('email_cliente.html', nome=nome)
+                )
+
+                mail.send(msg)
+                
                 return cliente.json(), 200
         return {"code_status":"invalid data in request"}, 400
     
