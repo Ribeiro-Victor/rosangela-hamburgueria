@@ -7,4 +7,4 @@ funcionario_api.add_url_rule('/funcionario', view_func = FuncionarioG.as_view('f
 
 funcionario_api.add_url_rule('/funcionario/<int:id>', view_func = FuncionarioId.as_view('funcionario_id'), methods = ['GET', 'PUT', 'PATCH', 'DELETE'])
 
-funcionario_api.add_url_rule('/login', view_func = FuncionarioLogin.as_view('funcionario_login'), methods = ['POST'])
+funcionario_api.add_url_rule('/login-func', view_func = FuncionarioLogin.as_view('funcionario_login'), methods = ['POST'])

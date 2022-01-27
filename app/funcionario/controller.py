@@ -84,7 +84,7 @@ class FuncionarioId(MethodView):
         funcionario.delete(funcionario)
         return funcionario.json()
 
-class FuncionarioLogin(MethodView): #/login
+class FuncionarioLogin(MethodView): #/login-func
     
     def post(self):
         body = request.json
