@@ -3,6 +3,7 @@ from flask.views import MethodView
 from flask import request, jsonify, render_template
 from flask_mail import Message
 from app.extensions import mail
+import bcrypt
 
 class FuncionarioG(MethodView):
     
@@ -17,7 +18,9 @@ class FuncionarioG(MethodView):
             funcionario = Funcionario.query.filter_by(email=email).first()
             if funcionario:
                 return {"code_status":"funcionario already exists"}, 400
-            funcionario = Funcionario(nome=nome, email=email, senha=senha)
+            
+            senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+            funcionario = Funcionario(nome=nome, email=email, senha=senha_hash)
             funcionario.save()
 
             msg = Message(

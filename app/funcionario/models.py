@@ -14,6 +14,5 @@ class Funcionario(BaseModel):
         return {
             "id":self.id,
             "nome":self.nome,
-            "email":self.email,
-            "senha":self.senha
+            "email":self.email
         }
