@@ -25,7 +25,7 @@ class ClienteG(MethodView):
                 if cliente:
                     return {"code_status":"cliente already exists"}, 400
                 
-                senha_hash = bcrypt(senha.encode(), bcrypt.gensalt())
+                senha_hash = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
                 cliente = Cliente(nome=nome, email=email, cpf=cpf, senha=senha_hash, telefone=telefone, endereco=endereco)
                 cliente.save()
 
