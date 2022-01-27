@@ -23,8 +23,8 @@ class FuncionarioG(MethodView):
             msg = Message(
                 sender = 'ribeiro@poli.ufrj.br',
                 recipients=[email],
-                subject='Bem-vindo a Minerva Burguer!',
-                html=render_template('email.html', nome=nome)
+                subject='Cadastro de Funcionário.',
+                html=render_template('email_funcionario.html', nome=nome)
             )
 
             mail.send(msg)
